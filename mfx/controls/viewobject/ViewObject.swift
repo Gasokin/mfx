@@ -22,7 +22,7 @@ class ViewObject: NSVisualEffectView,NSFilePresenter {
   }
 
   var _api_main: VcMainAPI?
-  var _url: URL?
+  var _current_url: URL?
   var _list = [EntityObject]()
   var _list_filter = [EntityObject]()
   var _fmgr = FileManager.default
@@ -30,7 +30,7 @@ class ViewObject: NSVisualEffectView,NSFilePresenter {
   var _cfg: ConfigItemViewObject!
 
   var _filter_now = false
-  var _filter_string = ""
+  var _filter_string: String? = nil
   
   var sort_kind = Consts.SortItem.Name
   var sort_order = Consts.SortOrder.Asc
@@ -50,19 +50,22 @@ class ViewObject: NSVisualEffectView,NSFilePresenter {
   }
   
   var url: URL? {
-    get {return _url}
+    get {return _current_url}
   }
   
   var list: [EntityObject] {
     get {
-      return _filter_now ? _list_filter : _list
+      guard let _ = _filter_string else {
+        return _list
+      }
+      return _list_filter
     }
     set {
-      if _filter_now {
-        _list_filter = newValue
-      } else {
+      guard let _ = _filter_string else {
         _list = newValue
+        return
       }
+      _list_filter = newValue
     }
   }
   
@@ -81,7 +84,7 @@ class ViewObject: NSVisualEffectView,NSFilePresenter {
   
   func reloadDir() {
     
-    guard let u = _url else {
+    guard let u = _current_url else {
       return
     }
 
@@ -97,7 +100,7 @@ class ViewObject: NSVisualEffectView,NSFilePresenter {
     
     OSLog.mfx.info("reloadData Start \(url.path)")
     
-    guard let u = _url else {
+    guard let u = _current_url else {
       OSLog.mfx.info("reloadData return")
       return
     }
@@ -112,10 +115,11 @@ class ViewObject: NSVisualEffectView,NSFilePresenter {
 
     tbList.reloadData()
     set(row)
+    OSLog.mfx.info("reloadData End \(row)")
   }
   
   func reloadData() {
-    var row: EntityObject? = get()
+    let row: EntityObject? = get()
     tbList.reloadData()
     
     if row == nil {
@@ -130,7 +134,7 @@ class ViewObject: NSVisualEffectView,NSFilePresenter {
   @discardableResult
   func setDir(_ url: URL,_ addListener: Bool = true) -> String? {
 
-    _url = url
+    _current_url = url
     var u3 = url
     
     // 存在しない場合は終了
@@ -177,17 +181,19 @@ class ViewObject: NSVisualEffectView,NSFilePresenter {
 
     // 配下のオブジェクト一覧を取得
     _list = Objects.getSubObjet(u3)
-    
+
     // フィルタリング中はその表示にする
-    setObjectMask(_filter_string)
-    
-    if _list.count > 0 {
+    if let fs = _filter_string {
+      setObjectMask(fs)
+    } else {
+      lbDir.stringValue = "\(url.path)/"
+    }
+
+    if list.count > 0 {
       set(0)
     }
 
     lbVolume.set(vol)
-    //lbDir.stringValue = u3.path
-
 
     let info = Objects.getInfoDir(list)
     lbInfoDir.stringValue = info.toString()
@@ -201,7 +207,8 @@ class ViewObject: NSVisualEffectView,NSFilePresenter {
     if addListener {
       addFilePresenter(url: url)
     }
-
+    
+    self._api_main?.setDetail()
     return nil
   }
   
@@ -269,7 +276,7 @@ class ViewObject: NSVisualEffectView,NSFilePresenter {
   
   func presentedSubitemDidChange(at url: URL) {
     
-    guard let u = _url else {
+    guard let u = _current_url else {
       return
     }
     

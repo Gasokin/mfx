@@ -54,13 +54,12 @@ extension ViewObject: ViewObjectApiObject {
 
   func setObjectMask(_ value: String) {
 
-    guard let u = _url else {
+    guard let u = _current_url else {
       return
     }
 
     if value.count < 1 {
-      _filter_now = false
-      _filter_string = ""
+      _filter_string = nil
       _list_filter.removeAll()
       tbList.reloadData()
       lbDir.stringValue = "\(u.path)/"
@@ -92,10 +91,7 @@ extension ViewObject: ViewObjectApiObject {
     _filter_now = true
     _filter_string = value
     reloadData(u)
-    lbDir.stringValue = "\(u.path)/"
-    if _filter_now {
-      lbDir.stringValue += "[\(_filter_string)]"
-    }
+    lbDir.stringValue = "\(u.path)/[\(_filter_string)]"
   }
 
 }

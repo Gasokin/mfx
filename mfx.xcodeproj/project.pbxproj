@@ -204,17 +204,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		8B222E9F2765978B003A8BC6 /* components */ = {
-			isa = PBXGroup;
-			children = (
-				8B42C6BC278472B000B5C3CF /* MFXLine.swift */,
-				8B6750302822A0E4004CC045 /* MFXView.swift */,
-				8B67503428274338004CC045 /* MFXInfoField.swift */,
-				8B5FB3EA288F7D8700B2CF1D /* MFXVolumeField.swift */,
-			);
-			path = components;
-			sourceTree = "<group>";
-		};
 		8B4197D627375BDE00E5BDA4 /* entities */ = {
 			isa = PBXGroup;
 			children = (
@@ -264,8 +253,12 @@
 		8B6225EE28BB9C2F0081464D /* controls */ = {
 			isa = PBXGroup;
 			children = (
-				8B99CB1328F44EE600F108F2 /* viewobject */,
+				8B67503428274338004CC045 /* MFXInfoField.swift */,
+				8B42C6BC278472B000B5C3CF /* MFXLine.swift */,
+				8B6750302822A0E4004CC045 /* MFXView.swift */,
+				8B5FB3EA288F7D8700B2CF1D /* MFXVolumeField.swift */,
 				8BCC61FC28BE1C0200F60020 /* tableview */,
+				8B99CB1328F44EE600F108F2 /* viewobject */,
 			);
 			path = controls;
 			sourceTree = "<group>";
@@ -333,7 +326,6 @@
 				8B7F544927321EF50043645D /* mfx.entitlements */,
 				8B7F544027321EF40043645D /* AppDelegate.swift */,
 				8B7F544427321EF50043645D /* Assets.xcassets */,
-				8B222E9F2765978B003A8BC6 /* components */,
 				8B91FFC328707E0900AA7571 /* config */,
 				8B6225EE28BB9C2F0081464D /* controls */,
 				8BA823C5284C5435006B9262 /* defaults */,

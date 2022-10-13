@@ -56,14 +56,20 @@ extension ViewObject: ViewObjectApiCursor {
   func get() -> EntityObject? {
     
     let o = list
-    
+
+    OSLog.mfx.info("get count \(o.count)")
+
     if o.count < 1 {
       return nil
     }
-    
+
+    OSLog.mfx.info("get B")
+
     guard let row: Int = get() else {
       return nil
     }
+
+    OSLog.mfx.info("get C")
 
     return o[row]
   }

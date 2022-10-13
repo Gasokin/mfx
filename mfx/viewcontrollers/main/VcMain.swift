@@ -31,28 +31,12 @@ class VcMain: NSViewController {
 
     setView()
     setList()
-    
+
     lbDetailName.font = cfg.item.DetailName.Font.font
     lbDetailInfo.font = cfg.item.DetailInfo.Font.font
     txMessage.font = cfg.item.Message.Font.font
-
-    /*
-     let dst = EntityObject(URL(fileURLWithPath: "/Users/yoshinori/Desktop"))
-     let cps = Copies()
-     let r = cps.mfx(src: en,
-     dst: dst,
-     ow: {() -> Bool in
-     self.lsbel.stringValue = "OverWrite?"
-     return true
-     },
-     pr: {self.lsbel.stringValue = "Complete!"}
-     )
-     
-     status.stringValue = r.0.description
-     message.stringValue = r.1
-    */
   }
-  
+
   override func viewDidDisappear() {
     
     OSLog.mfx.info("viewDidDisappear: Start")

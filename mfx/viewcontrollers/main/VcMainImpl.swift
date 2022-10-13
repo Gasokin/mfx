@@ -30,6 +30,7 @@ extension VcMain: VcMainAPI {
   func setDetail() {
     
     guard let entity: EntityObject = viewA.get() else {
+      OSLog.mfx.info("選択行がありません")
       return
     }
     
